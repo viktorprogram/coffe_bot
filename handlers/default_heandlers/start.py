@@ -6,4 +6,4 @@ def bot_start(message: Message):
     bot.reply_to(message, "<b>Добрый день</b>\n"
                           "Выберите одну из команд\n"
                           "/menu - меню\n"
-                          "/korsina - корзина с товаром", parse_mode='html')
+                          "/basket - корзина с товаром", parse_mode='html')

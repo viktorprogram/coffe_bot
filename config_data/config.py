@@ -9,7 +9,9 @@ else:
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 DEFAULT_COMMANDS = (
-    ('start', 'запуск бота'),
+    ('start', 'Запуск бота'),
+    ('menu', 'Вывести меню'),
+    ('basket', 'Вывести корзину'),
     ('help', 'Вывести справку'),
     ('hy', 'кака я то команда'),
 )
