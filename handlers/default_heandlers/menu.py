@@ -1,9 +1,10 @@
 from database.data_base import get_name_price_foot, get_full_menu_name_price, post_basket_name, post_basket_count
+from handlers.default_heandlers.basket import get_basket
 from loader import bot
 from telebot.types import Message, CallbackQuery
 from keyboards.inline_button import menu_button, foot_button, drinks_button, count_product
 from state.state_user import UserState
-from utils.get_name_price import list_callback
+from utils.utils import list_callback
 
 @bot.message_handler(commands=['menu'])
 def menu_command(massage: Message):
@@ -12,7 +13,6 @@ def menu_command(massage: Message):
 @bot.callback_query_handler(func=lambda call: call.data == 'foot')
 def foot_menu(call: CallbackQuery):
     """Вывод меню с продуктами"""
-    # bot.set_state(user_id=call.from_user.id, state=UserState.basket, chat_id=call.message.chat.id)
     bot.edit_message_text('Выберите продукт', chat_id=call.message.chat.id,
                           message_id=call.message.message_id, reply_markup=foot_button())
 
@@ -41,7 +41,8 @@ def add_count_state(messages: Message):
             bot.send_message(chat_id=messages.chat.id,
                              text=f'Вы добавили - <b>{data["product"]}</b> \n'
                                   f'количество - <b>{messages.text}</b>',
-                             parse_mode='html')
+                             parse_mode='html',
+                             reply_markup=menu_button())
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('count'))
 def add_count_callback(call: CallbackQuery):
@@ -54,5 +55,6 @@ def add_count_callback(call: CallbackQuery):
                                    f'количество - <b>{count}</b>',
                               chat_id=call.message.chat.id,
                               message_id=call.message.message_id,
-                              parse_mode='html')
+                              parse_mode='html',
+                              reply_markup=menu_button())
 

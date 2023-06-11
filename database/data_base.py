@@ -51,12 +51,23 @@ def post_basket_count(name: str, count: int, user_id):
     db_menu.commit()
     curs.close()
 
-def get_basket(user_id: int):
+def get_basket_db(user_id):
     """Вывод корзины с общей ценой"""
     db_menu = sqlite3.connect(r'database\\db_menu')
     curs = db_menu.cursor()
-    curs.execute(f"SELECT name_id.'name', price, count, (price * count ) FROM Basket")
+    curs.execute(f"SELECT name, Basket.price, count, (Basket.price * Basket.count) FROM Basket "
+                 f"JOIN menu ON menu.id = Basket.name_id "
+                 f"WHERE Basket.user_id = '{user_id}'")
     data = curs.fetchall()
-    print(data)
     curs.close()
     return data
+
+def cleaning_basket_db(user_id):
+    db_menu = sqlite3.connect(r'database\\db_menu')
+    curs = db_menu.cursor()
+    curs.execute(f"SELECT COUNT(*) FROM Basket WHERE user_id = {user_id}")
+    count = curs.fetchall()
+    curs.execute(f"DELETE FROM Basket WHERE user_id = {user_id}")
+    db_menu.commit()
+    curs.close()
+    return count
